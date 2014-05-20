@@ -5,4 +5,5 @@ gem 'sinatra'
 group :test, :development do
   gem 'pry'
   gem 'shotgun'
+  gem 'dotenv-rails'
 end
