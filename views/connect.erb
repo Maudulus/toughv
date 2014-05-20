@@ -32,93 +32,93 @@
     </script>
     <script type="text/javascript">
 
-      // function initialize() {
-      //  var mylat;
-      //  var mylong;
-      //  x = navigator.geolocation;
-
-      // x.getCurrentPosition(success, failure);
-
-      // function success(position) {
-      //    mylat = position.coords.latitude;
-      //    mylong = position.coords.longitude;
-
-      //   var mapOptions = {
-      //     center: new google.maps.LatLng(mylat, mylong),
-      //     zoom: 12
-      //   };
-      //   var map = new google.maps.Map(document.getElementById("map-canvas"),
-      //       mapOptions);
-      // }
-
-      // function failure(){
-      //   alert('doesnt work, please use a browser that supports geolocation');
-      // }
-
-
-
-      // }
-      // google.maps.event.addDomListener(window, 'load', initialize);
-
-var map;
-var infowindow;
-
-function initialize() {
-  var pyrmont = new google.maps.LatLng(-33.8665433, 151.1956316);
-  var mylat;
-      var mylong;
-      x = navigator.geolocation;
+      function initialize() {
+       var mylat;
+       var mylong;
+       x = navigator.geolocation;
 
       x.getCurrentPosition(success, failure);
 
-  function success(position) {
+      function success(position) {
          mylat = position.coords.latitude;
          mylong = position.coords.longitude;
 
-  map = new google.maps.Map(document.getElementById('map-canvas'), {
-    center: pyrmont,
-    zoom: 15
-  });
+        var mapOptions = {
+          center: new google.maps.LatLng(mylat, mylong),
+          zoom: 12
+        };
+        var map = new google.maps.Map(document.getElementById("map-canvas"),
+            mapOptions);
+      }
 
-  var request = {
-    location: pyrmont,
-    radius: 500,
-    types: ['store']
-  };
-  infowindow = new google.maps.InfoWindow();
-  var service = new google.maps.places.PlacesService(map);
-  service.nearbySearch(request, callback);
-}
-
-function callback(results, status) {
-  if (status == google.maps.places.PlacesServiceStatus.OK) {
-    for (var i = 0; i < results.length; i++) {
-      createMarker(results[i]);
-    }
-  }
-}
-
-function createMarker(place) {
-  var placeLoc = place.geometry.location;
-  var marker = new google.maps.Marker({
-    map: map,
-    position: place.geometry.location
-  });
-
-  google.maps.event.addListener(marker, 'click', function() {
-    infowindow.setContent(place.name);
-    infowindow.open(map, this);
-
-    function failure(){
+      function failure(){
         alert('doesnt work, please use a browser that supports geolocation');
       }
-  });
 
 
-}
-}
 
-google.maps.event.addDomListener(window, 'load', initialize);
+      }
+      google.maps.event.addDomListener(window, 'load', initialize);
+
+// var map;
+// var infowindow;
+
+// function initialize() {
+//   var pyrmont = new google.maps.LatLng(-33.8665433, 151.1956316);
+//   var mylat;
+//       var mylong;
+//       x = navigator.geolocation;
+
+//       x.getCurrentPosition(success, failure);
+
+//   function success(position) {
+//          mylat = position.coords.latitude;
+//          mylong = position.coords.longitude;
+
+//   map = new google.maps.Map(document.getElementById('map-canvas'), {
+//     center: pyrmont,
+//     zoom: 15
+//   });
+
+//   var request = {
+//     location: pyrmont,
+//     radius: 500,
+//     types: ['store']
+//   };
+//   infowindow = new google.maps.InfoWindow();
+//   var service = new google.maps.places.PlacesService(map);
+//   service.nearbySearch(request, callback);
+// }
+
+// function callback(results, status) {
+//   if (status == google.maps.places.PlacesServiceStatus.OK) {
+//     for (var i = 0; i < results.length; i++) {
+//       createMarker(results[i]);
+//     }
+//   }
+// }
+
+// function createMarker(place) {
+//   var placeLoc = place.geometry.location;
+//   var marker = new google.maps.Marker({
+//     map: map,
+//     position: place.geometry.location
+//   });
+
+//   google.maps.event.addListener(marker, 'click', function() {
+//     infowindow.setContent(place.name);
+//     infowindow.open(map, this);
+
+//     function failure(){
+//         alert('doesnt work, please use a browser that supports geolocation');
+//       }
+//   });
+
+
+// }
+// }
+
+// google.maps.event.addDomListener(window, 'load', initialize);
 
 
 
