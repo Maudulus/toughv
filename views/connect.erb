@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script type="text/javascript" src="/javascripts/jquery.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js">
+    <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=true"></script>
+
+</script>
+    <link rel="stylesheet" href="/stylesheets/css.css" type="text/css" />
+    <title>Tough Verse</title>
+  </head>
+    <body >
+      <div class="row">
+        <nav class="top-bar" data-topbar>
+            <ul>
+              <li><a href="/about">about</a></li>
+              <li><a href="/links">links</a></li>
+              <li><a href="/connect">connect</a></li>
+            </ul>
+        </nav>
+      </div>
+
+     <h1><a href="/">TOUGH VERSE</a></h1>
+
+          <% array = ["Jesus wept.", "Then Jesus said to his disciples, 'Whoever wants to be my disciple must deny themselves and take up their cross and follow me.'", "A new command I give you: Love one another. As I have loved you, so you must love one another.", "Do not let your hearts be troubled. Trust in God; trust also in me.", "Do not be anxious about tomorrow, for tomorrow will be anxious for itself. Let the day's own trouble be sufficient for the day.", "So I say to you, Ask and it will be given to you; search, and you will find; knock, and the door will be opened for you.", "If you want to be perfect, go, sell your possessions and give to the poor, and you will have treasure in heaven.", "For God so loved the World that he gave his only Son, that whoever believes in him should not perish but have eternal life." ] %>
+          <center><p class="btn" ><%= array.sample %></p></center>
+    </body>
+ <div id="map-canvas"/>
+
+    <script type="text/javascript"
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAqpjGHxJnNuI1aP_BiSaAjK3spic2Bnmc&sensor=true">
+    </script>
+    <script type="text/javascript">
+
+      // function initialize() {
+      //  var mylat;
+      //  var mylong;
+      //  x = navigator.geolocation;
+
+      // x.getCurrentPosition(success, failure);
+
+      // function success(position) {
+      //    mylat = position.coords.latitude;
+      //    mylong = position.coords.longitude;
+
+      //   var mapOptions = {
+      //     center: new google.maps.LatLng(mylat, mylong),
+      //     zoom: 12
+      //   };
+      //   var map = new google.maps.Map(document.getElementById("map-canvas"),
+      //       mapOptions);
+      // }
+
+      // function failure(){
+      //   alert('doesnt work, please use a browser that supports geolocation');
+      // }
+
+
+
+      // }
+      // google.maps.event.addDomListener(window, 'load', initialize);
+
+var map;
+var infowindow;
+
+function initialize() {
+  var pyrmont = new google.maps.LatLng(-33.8665433, 151.1956316);
+  var mylat;
+      var mylong;
+      x = navigator.geolocation;
+
+      x.getCurrentPosition(success, failure);
+
+  function success(position) {
+         mylat = position.coords.latitude;
+         mylong = position.coords.longitude;
+
+  map = new google.maps.Map(document.getElementById('map-canvas'), {
+    center: pyrmont,
+    zoom: 15
+  });
+
+  var request = {
+    location: pyrmont,
+    radius: 500,
+    types: ['store']
+  };
+  infowindow = new google.maps.InfoWindow();
+  var service = new google.maps.places.PlacesService(map);
+  service.nearbySearch(request, callback);
+}
+
+function callback(results, status) {
+  if (status == google.maps.places.PlacesServiceStatus.OK) {
+    for (var i = 0; i < results.length; i++) {
+      createMarker(results[i]);
+    }
+  }
+}
+
+function createMarker(place) {
+  var placeLoc = place.geometry.location;
+  var marker = new google.maps.Marker({
+    map: map,
+    position: place.geometry.location
+  });
+
+  google.maps.event.addListener(marker, 'click', function() {
+    infowindow.setContent(place.name);
+    infowindow.open(map, this);
+
+    function failure(){
+        alert('doesnt work, please use a browser that supports geolocation');
+      }
+  });
+
+
+}
+}
+
+google.maps.event.addDomListener(window, 'load', initialize);
+
+
+
+
+
+    </script>
+
+    <script type="text/javascript" src="/javascripts/myjavascript.js"></script>
+
+</html>
