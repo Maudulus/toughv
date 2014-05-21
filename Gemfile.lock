@@ -28,6 +28,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  dotenv
   dotenv-rails
   pry
   shotgun

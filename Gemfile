@@ -6,4 +6,5 @@ group :test, :development do
   gem 'pry'
   gem 'shotgun'
   gem 'dotenv-rails'
+  gem 'dotenv'
 end
