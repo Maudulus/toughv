@@ -1,6 +1,4 @@
 require 'sinatra'
-require 'dotenv'
-Dotenv.load
 
 get '/' do
 
