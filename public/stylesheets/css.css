@@ -112,3 +112,8 @@ body #button{
   width: 550px;
   position: center;
    }
+
+#map {
+  height: 400px;
+  width: 300px;
+}

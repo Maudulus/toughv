@@ -20,3 +20,7 @@ get '/connect' do
   erb :connect
 end
 
+get '/verse' do
+
+  erb :verse
+end

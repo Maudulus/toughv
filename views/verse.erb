@@ -1,0 +1,304 @@
+<!-- <head>
+    <script type="text/javascript" src="/javascripts/jquery.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js">
+ <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=true&libraries=places"></script>
+</script>
+    <link rel="stylesheet" href="/stylesheets/css.css" type="text/css" />
+    <title>Tough Verse</title>
+  </head>
+ -->
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <style>
+      html, body, #map-canvas {
+        height: 100%;
+        margin: 0px;
+        padding: 0px
+      }
+    </style>
+    <title>Place search pagination</title>
+    <script src="https://maps.googleapis.com/maps/api/js?sensor=false&libraries=places"></script>
+    <script>
+
+ function initialize() {
+       var mylat;
+       var mylong;
+       x = navigator.geolocation;
+
+      x.getCurrentPosition(success, failure);
+
+      function success(position) {
+         mylat = position.coords.latitude;
+         mylong = position.coords.longitude;
+
+        var mapOptions = {
+          center: new google.maps.LatLng(mylat, mylong),
+          zoom: 12,
+          types: ["store"]
+        };
+        var map = new google.maps.Map(document.getElementById("map-canvas"),
+            mapOptions);
+      }
+
+      function failure(){
+        alert('doesnt work, please use a browser that supports geolocation');
+      }
+        }
+
+
+
+
+var map, placesList;
+
+function initialize() {
+  var mylat;
+       var mylong;
+       x = navigator.geolocation;
+
+      x.getCurrentPosition(success, failure);
+
+      function success(position) {
+         mylat = position.coords.latitude;
+         mylong = position.coords.longitude;
+
+        var mapOptions = {
+          center: new google.maps.LatLng(mylat, mylong),
+          zoom: 12
+        };
+          var pyrmont = new google.maps.LatLng(mylat, mylong);
+
+  map = new google.maps.Map(document.getElementById('map-canvas'), {
+    center: pyrmont,
+    zoom: 17
+  });
+    var request = {
+    location: pyrmont,
+    radius: 1200,
+    types: ['church']
+  };
+
+  placesList = document.getElementById('places');
+
+  var service = new google.maps.places.PlacesService(map);
+  service.nearbySearch(request, callback);
+}
+      }
+
+      function failure(){
+        alert('doesnt work, please use a browser that supports geolocation');
+      }
+
+
+
+
+
+
+function callback(results, status, pagination) {
+  if (status != google.maps.places.PlacesServiceStatus.OK) {
+    return;
+  } else {
+    createMarkers(results);
+
+    if (pagination.hasNextPage) {
+      var moreButton = document.getElementById('more');
+
+      moreButton.disabled = false;
+
+      google.maps.event.addDomListenerOnce(moreButton, 'click',
+          function() {
+        moreButton.disabled = true;
+        pagination.nextPage();
+      });
+    }
+  }
+}
+
+function createMarkers(places) {
+  var bounds = new google.maps.LatLngBounds();
+
+  for (var i = 0, place; place = places[i]; i++) {
+    var image = {
+      url: place.icon,
+      size: new google.maps.Size(71, 71),
+      origin: new google.maps.Point(0, 0),
+      anchor: new google.maps.Point(17, 34),
+      scaledSize: new google.maps.Size(25, 25)
+    };
+
+    var marker = new google.maps.Marker({
+      map: map,
+      icon: image,
+      title: place.name,
+      position: place.geometry.location
+    });
+
+    placesList.innerHTML += '<li>' + place.name + '</li>';
+
+    bounds.extend(place.geometry.location);
+  }
+  map.fitBounds(bounds);
+}
+
+google.maps.event.addDomListener(window, 'load', initialize);
+
+    </script>
+    <style>
+      #results {
+        font-family: Arial, Helvetica, sans-serif;
+        position: absolute;
+        right: 5px;
+        top: 50%;
+        margin-top: -195px;
+        height: 380px;
+        width: 200px;
+        padding: 5px;
+        z-index: 5;
+        border: 1px solid #999;
+        background: #fff;
+      }
+      h2 {
+        font-size: 22px;
+        margin: 0 0 5px 0;
+      }
+      ul {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+        height: 321px;
+        width: 200px;
+        overflow-y: scroll;
+      }
+      li {
+        background-color: #f1f1f1;
+        padding: 10px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+      }
+      li:nth-child(odd) {
+        background-color: #fcfcfc;
+      }
+      #more {
+        width: 100%;
+        margin: 5px 0 0 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map-canvas"></div>
+    <div id="results">
+      <h2>Results</h2>
+      <ul id="places"></ul>
+      <button id="more">More results</button>
+    </div>
+  </body>
+</html>
+
+<!--
+    <script >
+      var infowindow,
+          placemarkers=[];
+
+
+      function placeSearch(map,request)
+      {
+        var map=map;
+        var service = new google.maps.places.PlacesService(map);
+        service.search(request,
+                       function(results,status)
+                       {
+                        if (status == google.maps.places.PlacesServiceStatus.OK)
+                        {
+                          var bounds=new google.maps.LatLngBounds();
+                          for (var i = 0; i < results.length; ++i)
+                          {
+                            bounds.extend(results[i].geometry.location);
+                            placemarkers.push(createMarker(results[i].geometry.location,
+                                         map,
+                                         'http://labs.google.com/ridefinder/images/mm_20_orange.png',
+                                         results[i].name,
+                                         false,
+                                         {
+                                          fnc:function()
+                                          {
+                                            infowindow.open();
+                                          }
+
+                                         }));
+                          }
+                          map.fitBounds(bounds);
+                        }
+                       }
+                       );
+
+      }
+
+      function createMarker(latlng,map,icon,content,center,action)
+      {
+
+
+        var marker = new google.maps.Marker({
+          map: map,
+          position: latlng,
+          content:content
+        });
+        if(icon){marker.setIcon(icon);}
+
+        if(center)
+        {
+          map.setCenter(latlng);
+        }
+
+        google.maps.event.addListener(marker, 'click', function() {
+          infowindow.setContent(this.content);
+          infowindow.open(map, this);
+        });
+
+        if(action)
+        {
+          action.fnc(map,action.args);
+        }
+        return marker;
+      }
+      function initialize()
+      {
+
+        var location = new google.maps.LatLng(-33.8665433, 151.1956316),
+            map = new google.maps.Map(document.getElementById('map'), {
+                      mapTypeId: google.maps.MapTypeId.ROADMAP,
+                      center: location,
+                      zoom: 15
+                      });
+         infowindow = new google.maps.InfoWindow();
+         navigator.geolocation.getCurrentPosition(function(place)
+         {
+            createMarker(
+                          new google.maps.LatLng(place.coords.latitude,
+                                                place.coords.longitude),
+                          map,
+                          null,
+                          'your current position',
+                          true,
+                          {
+                           fnc:placeSearch,
+                           args:{
+                                 radius: 5000,
+                                 types: ['church'],
+                                 location:new google.maps.LatLng(place.coords.latitude,
+                                                                 place.coords.longitude)
+                                }
+                         }
+                         );
+         });
+      }
+
+
+
+    </script>
+
+        <div id="map"></div>
+ -->
