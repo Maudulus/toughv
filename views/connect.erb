@@ -26,10 +26,13 @@
           <center><p class="btn" ><%= array.sample %></p></center>
     </body>
  <div id="map-canvas"/>
-
-    <script type="text/javascript"
+<!--
+  <script type="text/javascript"
       src="https://maps.googleapis.com/maps/api/js?key=#{ENV['API_KEY']}&sensor=true">
     </script>
+    -->
+        <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=true&libraries=places"></script>
+
     <script type="text/javascript">
 
       function initialize() {
@@ -45,7 +48,8 @@
 
         var mapOptions = {
           center: new google.maps.LatLng(mylat, mylong),
-          zoom: 12
+          zoom: 12,
+          types: ["store"]
         };
         var map = new google.maps.Map(document.getElementById("map-canvas"),
             mapOptions);
