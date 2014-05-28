@@ -109,11 +109,11 @@ body #button{
 
  #map-canvas {
   height: 300px;
-  width: 550px;
-  position: center;
+  width: 100%;
+  position: left;
    }
 
 #map {
   height: 400px;
-  width: 300px;
+  width: 100%;
 }
