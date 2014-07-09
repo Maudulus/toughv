@@ -24,3 +24,8 @@ get '/verse' do
 
   erb :verse
 end
+
+get 'googlee35f528f82dc08c0.html' do
+
+  erb :googlee35f528f82dc08c0
+end
